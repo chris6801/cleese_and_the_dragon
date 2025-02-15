@@ -51,7 +51,7 @@ end
 
 function title_draw()
 	cls()
-	map(1,0,32,32)
+	map(1,0,32,32,8,8)
 	print("welcome to the jungle",
 	24,100,7)
 	if title_t<10 then
@@ -90,6 +90,7 @@ function play_init()
 	game.update=play_update
 	game.draw=play_draw
 	make_player()
+	make_pike()
 end
 
 function play_update()
@@ -99,6 +100,8 @@ end
 
 function play_draw()
 	cls()
+	map(10,3,0,0,20,20)
+	camera(p.x-64,p.y-64)
 	obj_draw()
 end
 
@@ -209,7 +212,7 @@ function newbullet(x,y,w,h,dx,dy)--bullets have position x,y, width, height, and
   w=w,h=h,                   --b.w and b.h are also set to the function's w and h args
   time=30,
   r=2,
-  fr=4,
+  fr=10,
   speed=5,
   a_idx=1,
   cols = {7,5,0},                   --this is how long a bullet will last before disappearing
@@ -221,7 +224,6 @@ function newbullet(x,y,w,h,dx,dy)--bullets have position x,y, width, height, and
 end
 
 function obj_draw()             --the game's draw function, only called 30 times/second when there's no lag
- cls()
  for o in all(objs) do o:draw() end --o:draw() is the same as o.draw(o). this is useful here!
 end
 
@@ -241,7 +243,7 @@ function shoot_shotgun(shooter)
 	local dy = shooter.dir.y
 
 	for i=0,7 do
-		newbullet(shooter.x, shooter.y, 2, 2, dx + (rnd(0.5) - 0.25), dy + (rnd(0.5) - 0.25))
+		newbullet(shooter.x, shooter.y + 8, 2, 2, dx + (rnd(0.5) - 0.25), dy + (rnd(0.5) - 0.25))
 	end
 end
 
@@ -340,6 +342,48 @@ function make_player()
 		end
 	}
 	add(objs, p)	 
+end
+
+function make_pike()
+	pike = {
+		x = 40,
+		y = 40,
+		dx = 0,
+		dy = 0,
+		spr = 192,
+		dir = {x = 0, y = 0},
+		play = "idle",
+		a_idx = 0,
+		alive = true,
+		flip = false,
+		anims = {
+			idle = {fr=15, 192, 194},
+			walkx = {fr=10, 196, 198}
+		},
+		update = function(self)
+			self.x += self.dx
+			self.y += self.dy
+
+			distance = sqrt((p.x - self.x) ^ 2 + (p.y - self.y) ^ 2)
+			if abs(p.x - self.x) > 20 then
+				self.dx = p.x - self.x
+				self.dx /= distance
+			elseif abs(p.y - self.y) > 20 then
+				self.dy = p.y - self.y
+				self.dy /= distance
+			else
+				self.dx = rnd(1) - 0.5
+				self.dy = rnd(1) - 0.5
+			end
+
+			animate(self)
+			return self.alive
+		end,
+		draw = function(self)
+			spr(self.spr, self.x, self.y, 2, 2, self.flip)
+		end,
+	}
+	add(objs, pike)
 end
 
 --shotgun
