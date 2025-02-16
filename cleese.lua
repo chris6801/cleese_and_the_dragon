@@ -136,6 +136,9 @@ function x_interact(obj)
 	end
 end
 
+function get_distance(x0,y0,x1,y1) do
+			return sqrt((x1 - x0) ^ 2 + (y1 - y0) ^ 2)
+end
 
 --physics
 friction = .85
@@ -361,6 +364,16 @@ function make_pike()
 			walkx = {fr=10, 196, 198}
 		},
 		update = function(self)
+
+			--determine state
+			for e in all(enemies) do
+							local d = get_distance(self.x, self.y, e.x, e.y
+							if d < 30 then
+										self.play = "idle"
+							end
+			end
+
+		 
 			self.x += self.dx
 			self.y += self.dy
 
@@ -425,6 +438,9 @@ shotgun = {
 	end,
 }
 add(objs, shotgun)
+
+--enemies
+enemies = {}
 
 --dialogue
 
