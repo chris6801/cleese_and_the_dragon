@@ -25,63 +25,6 @@ function _draw()
 	end	
 end
 
---title screen
-
-title_t = 0
-title_c = 7
-
-prompt_t = 0
-prompt_idx = 1
-
-fade_cols = {7, 5, 0, 5}
-
-function title_init()
-	game.update=title_update
-	game.draw=title_draw
-	print("title initialized")
-end
-
---game_init=title_init
-
-function title_update()
-	if btnp(❎) then
-		cr_init()
-	end	
-end
-
-function title_draw()
-	cls()
-	map(1,0,32,32,8,8)
-	print("welcome to the jungle",
-	24,100,7)
-	if title_t<10 then
-		title_c=7
-	elseif title_t<20 then
-		title_c=5
-	elseif title_t<30 then
-		title_c=0
-	elseif title_t<40 then
-		title_c=5
-	elseif title_t<50 then
-		title_t=0
-	end
-	print("press ❎ to start",
-	32,110,title_c)
-	title_t+=1
-end
-
-function x_prompt(x, y, cols)
-	if prompt_idx > #cols then
-		prompt_idx = 1
-	end
-	print("press ❎ to continue", x, y, cols[prompt_idx])
-	prompt_t += 1
-	if prompt_t > 10 then
-		prompt_t = 0
-		prompt_idx += 1
-	end
-end
-
 --game scene
 
 function play_init()
@@ -103,6 +46,7 @@ function play_draw()
 	map(10,3,0,0,20,20)
 	camera(p.x-64,p.y-64)
 	obj_draw()
+<<<<<<< HEAD
 end
 
 --utils
@@ -542,4 +486,6 @@ function cr_draw()
 	if paused then
 		x_prompt(20, 121, fade_cols)
 	end
+=======
+>>>>>>> b085451 (Refactored into separate files, included .p8 cart for graphics and sound)
 end
