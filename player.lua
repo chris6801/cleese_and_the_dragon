@@ -13,6 +13,7 @@ function make_player()
 		a_idx = 0,
 		t = 1,
 		inventory = {},
+		shootable = false,
 		flip = false,
 		spr = 1,
 		shotgun = false,
@@ -61,7 +62,7 @@ function make_player()
 			--shotgun 
 			if self.shotgun then
 				if btnp(🅾️) then
-					shoot(self)
+					shoot(self, shotgun)
 				end
 			end
 		end,

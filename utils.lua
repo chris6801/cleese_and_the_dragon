@@ -43,7 +43,7 @@ end
 
 --animation
 function animate(x)
-	print("animating")
+	--print("animating")
 	if x.state~=x.play then
 		x.state=x.play
 		x.a_idx=1

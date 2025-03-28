@@ -32,6 +32,8 @@ function play_init()
 	y=32
 	game.update=play_update
 	game.draw=play_draw
+	setup_map()
+	make_enemy(140,32)
 	make_player()
 	make_pike()
 end
@@ -43,7 +45,7 @@ end
 
 function play_draw()
 	cls()
-	map(10,3,0,0,20,20)
+	map(10,3,0,0)
 	camera(p.x-64,p.y-64)
 	obj_draw()
 end
