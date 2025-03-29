@@ -13,6 +13,7 @@ function make_player()
 		a_idx = 0,
 		t = 1,
 		charging = false,
+		charge_time = 0,
 		inventory = {},
 		shootable = false,
 		knocked_back = false,
@@ -124,7 +125,8 @@ function make_player()
 		draw = function(self)
 			--charging pallet swap by using the frame counter
 			if self.charging then
-				if stat(9) % 3 == 0 and shotgun.charge < shotgun.charge_max then
+				self.charge_time += 1
+				if self.charge_time % 2 == 0 and shotgun.charge < shotgun.charge_max then
 					if toggled then	
 						pal(8,13)
 						toggled = false
@@ -132,14 +134,16 @@ function make_player()
 						pal(13,8)
 						toggled = true
 					end
+			
 				end
 			else
+				self.charge_time = 0
 				pal()
 			end
 			spr(self.spr + self.s_offset, self.x,
 			self.y, 2, 2, self.flip)
 			pal()
-		end
+		end,
 	}
 	add(objs, p)	 
 end

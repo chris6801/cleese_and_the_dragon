@@ -52,11 +52,9 @@ function make_enemy(x,y)
                 if self.moving == false then
                     self.move_wait -= 1
                 end
-                if self.moving then
-                   self.move_time -= 1
-                end
+                if (self.moving) self.move_time -= 1
             end
-
+            
             --check health
             if self.health <= 0 then
                 self.alive = false
