@@ -12,8 +12,11 @@ function make_player()
 		play = "idle",
 		a_idx = 0,
 		t = 1,
+		charging = false,
 		inventory = {},
 		shootable = false,
+		knocked_back = false,
+		kb_intensity = .05,
 		flip = false,
 		spr = 1,
 		shotgun = false,
@@ -24,6 +27,12 @@ function make_player()
 			idle = {fr=15, 128, 130},
 			walkx = {fr=10, 132, 134}
 		},
+		--knock back
+		knock_back = function(self, intensity)
+			self.dx = -self.dir.x * (self.kb_intensity * shotgun.knock_back)
+			self.dy = -self.dir.y * (self.kb_intensity * shotgun.knock_back)
+			self.knocked_back = false
+		end,
 		input = function(self)
 			if btn(⬅️) then
 				self.dx = -1
@@ -60,9 +69,25 @@ function make_player()
 			end
 
 			--shotgun 
-			if self.shotgun then
-				if btnp(🅾️) then
-					shoot(self, shotgun)
+			if self.shotgun and shotgun.ready then
+				if is_held(🅾️) then
+					shotgun.charge += 1
+					if shotgun.charge > shotgun.charge_max then
+						self.charge = 30
+					end
+					if shotgun.charge > 0 then
+						self.charging = true
+					end
+				else
+					self.charging = false
+				end
+				if is_released(🅾️) then
+					self.kb_intensity += shotgun.charge * .1
+					shoot(self, shotgun) 	
+					self.knock_back(self, self.kb_intensity)
+					shotgun.ready = false
+					shotgun.charge = 0
+					self.kb_intensity = 0
 				end
 			end
 		end,
@@ -70,6 +95,13 @@ function make_player()
 			--multiply friction
 			self.dx *= friction
 			self.dy *= friction
+			
+			--knock back
+			if self.knocked_back then
+				self.dx = -self.dir.x * (self.kb_intensity * shotgun.knock_back)
+				self.dy = -self.dir.y * (self.kb_intensity * shotgun.knock_back)
+				self.knocked_back = false
+			end
 
 			self.x += self.dx
 			self.y += self.dy
@@ -85,12 +117,28 @@ function make_player()
 			else
 				self.play = "idle"
 			end
+
 			animate(self)
 			return self.alive
 		end,
 		draw = function(self)
+			--charging pallet swap by using the frame counter
+			if self.charging then
+				if stat(9) % 3 == 0 and shotgun.charge < shotgun.charge_max then
+					if toggled then	
+						pal(8,13)
+						toggled = false
+					else
+						pal(13,8)
+						toggled = true
+					end
+				end
+			else
+				pal()
+			end
 			spr(self.spr + self.s_offset, self.x,
 			self.y, 2, 2, self.flip)
+			pal()
 		end
 	}
 	add(objs, p)	 

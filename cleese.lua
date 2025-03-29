@@ -40,6 +40,7 @@ end
 
 function play_update()
 	p:input()
+	upd_keys()
 	obj_update()
 end
 

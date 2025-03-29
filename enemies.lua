@@ -53,7 +53,7 @@ function make_enemy(x,y)
                     self.move_wait -= 1
                 end
                 if self.moving then
-                    self.move_time -= 1
+                   self.move_time -= 1
                 end
             end
 

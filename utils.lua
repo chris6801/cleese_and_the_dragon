@@ -41,6 +41,55 @@ function x_prompt(x, y, cols)
 	end
 end
 
+--input handling
+keys = {}
+
+function is_held(k)
+	return band(keys[k], 1) == 1
+end
+
+function is_pressed(k)
+	return band(keys[k], 2) == 2
+end
+
+function is_released(k)
+	return band(keys[k], 4) == 4	
+end
+
+function upd_key(k)
+	if keys[k] == nil then 
+		keys[k] = 0
+	end
+
+	if keys[k] == 0 then
+		if btn(k) then
+			keys[k] = 3
+		end
+	elseif keys[k] == 1 then
+		if btn(k) == false then
+			keys[k] = 4
+		end
+	elseif keys[k] == 3 then
+		if btn(k) then
+			keys[k] = 1
+		else 
+			keys[k] = 4
+		end
+	elseif keys[k] == 4 then
+		if btn(k) then
+			keys[k] = 3
+		else
+			keys[k] = 0
+		end
+	end
+end
+
+function upd_keys()
+	for i=0, 5 do
+		upd_key(i)
+	end
+end
+
 --animation
 function animate(x)
 	--print("animating")

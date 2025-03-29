@@ -9,8 +9,13 @@ shotgun = {
 	user = nil,
 	equipped = false,
 	bullets = 5,
-	shot_num = 5,
-	knockback = 10,
+	shot_num = 3,
+	knock_back = 0.5,
+	charge = 0,
+	charging = false,
+	charge_max = 30,
+	ready = true,
+	cooldown = 10,
 	spr = 73,
 	t = 0,
 	alive = true,
@@ -50,6 +55,14 @@ shotgun = {
 			end
 			self.x = p.x + x_off	
 			self.y = p.y
+
+			if self.ready == false then
+				self.cooldown -= 1
+			end
+			if self.cooldown <= 0 then
+				self.ready = true
+				self.cooldown = 10
+			end
 		end
 		return self.alive
 	end,
@@ -61,3 +74,12 @@ shotgun = {
 	end,
 }
 add(objs,shotgun)
+
+function shoot(shooter, gun) 
+	local dx = shooter.dir.x
+	local dy = shooter.dir.y
+local num = gun.shot_num + .1 * gun.charge
+	for i=0,num do
+		newbullet(gun.x, gun.y + 8, 2, 2, dx + (rnd(0.5) - 0.25), dy + (rnd(0.5) - 0.25))
+	end
+end

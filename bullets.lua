@@ -54,12 +54,3 @@ end
    add(bs,b)                 --now we can manage all bullets in a list
    return b                    --and if some are special, we can adjust them a bit outside of this function
   end
-
-  function shoot(shooter, gun) 
-	local dx = shooter.dir.x
-	local dy = shooter.dir.y
-  local num = gun.shot_num
-	for i=0,num do
-		newbullet(gun.x, gun.y + 8, 2, 2, dx + (rnd(0.5) - 0.25), dy + (rnd(0.5) - 0.25))
-	end
-end
