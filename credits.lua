@@ -5,6 +5,14 @@ open_credits = {
 	"swanky apartment party,", 
 	"a going away party...",
     "▒",
+	"cleese is what they call",
+	"him: friends and coworkers,",
+	"even his girlfriend doris.",
+	"▒",
+	"cleese wanders around the ",
+	"party saying goodbye, cleese",
+	"is leaving the job he hates,",
+	"▒"
 }
 open_credits_cont = {
 	"cleese is what they call",
@@ -18,9 +26,7 @@ open_credits_cont = {
    }
 
 function draw_op_bg()
-	spr(10, 32, 32)
-	spr(11, 40, 32)
-	spr(11, 48, 32)
+	map(0,0,0,0,15,13)
 end
    
 current_line = 1
@@ -67,8 +73,10 @@ end
 
 function cr_draw()
 	cls()
-	rect(1,78,120,127,3)
 	draw_op_bg()
+	spr(136,40,50,1,2)
+	spr(136,50,36,1,2)
+	rectfill(1,78,120,127,3)
 
 	--Draw previously completed lines
 	local y_offset = 0

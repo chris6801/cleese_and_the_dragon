@@ -78,7 +78,8 @@ add(objs,shotgun)
 function shoot(shooter, gun) 
 	local dx = shooter.dir.x
 	local dy = shooter.dir.y
-local num = gun.shot_num + .1 * gun.charge
+	local num = gun.shot_num + .1 * gun.charge
+	sfx(0)
 	for i=0,num do
 		newbullet(gun.x, gun.y + 8, 2, 2, dx + (rnd(0.5) - 0.25), dy + (rnd(0.5) - 0.25))
 	end
