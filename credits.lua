@@ -5,14 +5,6 @@ open_credits = {
 	"swanky apartment party,", 
 	"a going away party...",
     "▒",
-	"cleese is what they call",
-	"him: friends and coworkers,",
-	"even his girlfriend doris.",
-	"▒",
-	"cleese wanders around the ",
-	"party saying goodbye, cleese",
-	"is leaving the job he hates,",
-	"▒"
 }
 open_credits_cont = {
 	"cleese is what they call",
@@ -28,7 +20,27 @@ open_credits_cont = {
 function draw_op_bg()
 	map(0,0,0,0,15,13)
 end
-   
+
+sunset_cols = {8,14}
+sky_cols = {1,2}
+sunset_i = 1
+sunset_t = 0
+sunset_new = 8
+sunset_prev = nil
+
+function sunset(time)
+	local t = time
+	if t % 30 == 0 then
+		sunset_prev = sunset_cols[sunset_i]
+		sky_prev = sky_cols[sunset_i]
+		sunset_i = (sunset_i % #sunset_cols) + 1
+	end
+	sunset_new = sunset_cols[sunset_i]
+	sky_new = sky_cols[sunset_i]
+	pal(sunset_prev, sunset_new)
+	pal(sky_prev, sky_new)
+end 
+
 current_line = 1
 clip_width = 0
 base_y = 34
@@ -73,9 +85,15 @@ end
 
 function cr_draw()
 	cls()
+	sunset(sunset_t)
+	if sunset_t > 30 then
+		sunset_t = 0
+	end
+	sunset_t += 1
 	draw_op_bg()
-	spr(136,40,50,1,2)
-	spr(136,50,36,1,2)
+	pal()
+	spr(142,40,50,1,2)
+	spr(174,50,36,1,2)
 	rectfill(1,78,120,127,3)
 
 	--Draw previously completed lines

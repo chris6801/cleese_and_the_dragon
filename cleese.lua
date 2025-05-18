@@ -49,4 +49,5 @@ function play_draw()
 	map(10,3,0,0)
 	camera(p.x-64,p.y-64)
 	obj_draw()
+	print(flr(time()))
 end

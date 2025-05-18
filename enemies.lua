@@ -11,6 +11,7 @@ function make_enemy(x,y)
 		ay = 0,
         w = 8,
         h = 8,
+        hit=false,
         health = 5,
         shootable = true,
 		dir = {x = 0, y = 0},
@@ -77,7 +78,10 @@ function make_enemy(x,y)
 		draw = function(self)
 			spr(self.spr + self.s_offset, self.x,
 			self.y, 1, 1, self.flip)
-		end
+            if self.hit then
+                print("-1", self.x+4,self.y+4)
+            end
+		end,
     }
     add(objs,e)
     --add(enms,e)

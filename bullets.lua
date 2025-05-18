@@ -8,7 +8,7 @@ bs = {}
      circfill(o.x, o.y, o.r, o.cols[o.a_idx])            --as long as those objects have spr, x, and y values inside
   end
   function bulletupdate(b)
-   det_colls(b, objs  )     --a function for moving bullets a little bit at a time
+   det_colls(b, objs)     --a function for moving bullets a little bit at a time
    b.x += b.dx * b.speed                --x moves by the change in x every frame (dx)
    b.y += b.dy * b.speed             --y moves by the change in y every frame (dy)
    b.r += 0.05               
@@ -26,10 +26,14 @@ function det_colls(b,objs)
   for obj in all(objs) do
     if obj.shootable then
       if obj.x < b.x + b.r and b.x + b.r < obj.x + obj.w and
-        obj.y < b.y + b.r and b.y + b.r < obj.y + obj.h then
-          obj.health -= b.power
-          b.alive = false
-          explosion(b)
+      obj.y < b.y + b.r and b.y + b.r < obj.y + obj.h then
+        obj.health -= b.power
+        obj.hit = true
+        b.alive = false
+        sfx(1)
+        explosion(b)
+      else
+        obj.hit=false
       end
     end
   end
